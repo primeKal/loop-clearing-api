@@ -1,0 +1,35 @@
+@media screen and (max-width: 400px) {
+  #features {
+    padding: 20px;
+    width: 111%;
+  }
+  #about,
+  #services,
+  #testimonials,
+  #team,
+  #contact,
+  #footer {
+    width: 111%;
+  }
+
+  #portfolio {
+    width: 110%;
+  }
+}
+
+.page {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  margin-top: 8%;
+}
+
+.search-input {
+  margin-right: 10px; /* adjust as needed */
+}
+
+.logged-in {
+  display: flex;
+  flex-direction: row;
+  justify-content: end; /* adjust as needed */
+}

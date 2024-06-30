@@ -7,9 +7,11 @@ import { UserModule } from './user/user.module';
 import { CurrencyModule } from './currency/currency.module';
 import { DummyModule } from './dummy/dummy.module';
 import { ClearingModule } from './clearing/clearing.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     DatabaseModule,
     UserModule,
     TransactionModule,

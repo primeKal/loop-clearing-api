@@ -1,0 +1,182 @@
+{
+  "Header": {
+    "title": "Simplify Your Transactions",
+    "paragraph": "Efficient Clearing, Enhanced Cash Flow"
+  },
+  "About": {
+    "paragraph": "We are a group of young professionals that want to help the world become a better place. We use our technical skills to help business preform better",
+    "Why": [
+      "Fast and Diligent",
+      "Young Professionals",
+      "Direct Transactions",
+      "Experienced Software Engineers"
+    ],
+    "Why2": [
+      "Real Desire To Help Business",
+      "Real Desire To Solve Problems"
+    ]
+  },
+  "Gallery": [
+    {
+      "title": "Project Title",
+      "largeImage": "img/portfolio/01-large.jpg",
+      "smallImage": "img/portfolio/01-small.jpg"
+    },
+    {
+      "title": "Project Title",
+      "largeImage": "img/portfolio/02-large.jpg",
+      "smallImage": "img/portfolio/02-small.jpg"
+    },
+    {
+      "title": "Project Title",
+      "largeImage": "img/portfolio/03-large.jpg",
+      "smallImage": "img/portfolio/03-small.jpg"
+    },
+    {
+      "title": "Project Title",
+      "largeImage": "img/portfolio/04-large.jpg",
+      "smallImage": "img/portfolio/04-small.jpg"
+    },
+    {
+      "title": "Project Title",
+      "largeImage": "img/portfolio/05-large.jpg",
+      "smallImage": "img/portfolio/05-small.jpg"
+    },
+    {
+      "title": "Project Title",
+      "largeImage": "img/portfolio/06-large.jpg",
+      "smallImage": "img/portfolio/06-small.jpg"
+    },
+    {
+      "title": "Project Title",
+      "largeImage": "img/portfolio/07-large.jpg",
+      "smallImage": "img/portfolio/07-small.jpg"
+    },
+    {
+      "title": "Project Title",
+      "largeImage": "img/portfolio/08-large.jpg",
+      "smallImage": "img/portfolio/08-small.jpg"
+    },
+    {
+      "title": "Project Title",
+      "largeImage": "img/portfolio/09-large.jpg",
+      "smallImage": "img/portfolio/09-small.jpg"
+    }
+  ],
+  "Services": [
+    {
+      "icon": "fa fa-newspaper-o",
+      "name": "Traders Registration",
+      "text": "In order to clear your transactions with other people, it is obvious to register and manage them."
+    },
+    {
+      "icon": "fa fa-archive",
+      "name": "Loop-Clearing algorithms",
+      "text": "We have a number of algorithm with different effectiveness that traders can consume."
+    },
+    {
+      "icon": "fa fa-cloud-download",
+      "name": "Transaction Management API",
+      "text": "We provide API end point for different systems to integrate and use our users and their transaction data"
+    },
+    {
+      "icon": "fa fa-language",
+      "name": "Loop Clearing API",
+      "text": "Consume our loop clearing algorithms with out the need for different requirements, just use your transaction data and you are good to go."
+    },
+    {
+      "icon": "fa fa-plane",
+      "name": "Cash Flow Optimization",
+      "text": "Identify and free up locked cash between partners"
+    },
+    {
+      "icon": "fa fa-pie-chart",
+      "name": "Public Training",
+      "text": "We train and give access to our real time data, in order to educate and lift the current trading standards."
+    }
+  ],
+  "Testimonials": [
+    {
+      "img": "img/testimonials/01.jpg",
+      "text": "\"One of the best ideas I have ever heard, in addition to the implementation, I am amazed at the projects and donations you guys have done. Keep it up.\"",
+      "name": "John Doe"
+    },
+    {
+      "img": "img/testimonials/02.jpg",
+      "text": "\"One of the best ideas I have ever heard, in addition to the implementation, I am amazed at the projects and donations you guys have done. Keep it up.\"",
+      "name": "Johnathan Doe"
+    },
+    {
+      "img": "img/testimonials/03.jpg",
+      "text": "\"One of the best ideas I have ever heard, in addition to the implementation, I am amazed at the projects and donations you guys have done. Keep it up.\"",
+      "name": "John Doe"
+    },
+    {
+      "img": "img/testimonials/04.jpg",
+      "text": "\"One of the best ideas I have ever heard, in addition to the implementation, I am amazed at the projects and donations you guys have done. Keep it up.\"",
+      "name": "Johnathan Doe"
+    },
+    {
+      "img": "img/testimonials/05.jpg",
+      "text": "\"One of the best ideas I have ever heard, in addition to the implementation, I am amazed at the projects and donations you guys have done. Keep it up.\"",
+      "name": "John Doe"
+    },
+    {
+      "img": "img/testimonials/06.jpg",
+      "text": "\"One of the best ideas I have ever heard, in addition to the implementation, I am amazed at the projects and donations you guys have done. Keep it up.\"",
+      "name": "Johnathan Doe"
+    }
+  ],
+  "Team": [
+    {
+      "img": "img/team/01.jpg",
+      "name": "Kaleb Teshale",
+      "job": "Product Owner/Full Stack Developer"
+    },
+    {
+      "img": "img/team/02.jpg",
+      "name": "Frezer Zewdu",
+      "job": "Advisor"
+    },
+    {
+      "img": "img/team/03.jpg",
+      "name": "Yonas Bekele",
+      "job": "Senior Advisor"
+    },
+    {
+      "img": "img/team/04.jpg",
+      "name": "Sara Mekonen",
+      "job": "Stake Holder"
+    }
+  ],
+  "Contact": {
+    "address": "4321 Akaki Kality, Wereda 08, 681",
+    "phone": "+251925499376",
+    "email": "kalebteshale72@gmail.com",
+    "facebook": "fb.com/kalu_teshale",
+    "twitter": "twitter.com",
+    "youtube": "youtube.com"
+  },
+  "Features": [
+    {
+      "icon": "fa fa-comments-o",
+      "title": "Traders Registration",
+      "text": "we manage and register traders in order to clear their transactions."
+    },
+    {
+      "icon": "fa fa-bullhorn",
+      "title": "Transaction Management",
+      "text": "We have a large number of stories for you to browse through, these are real and are the ones that show real goodness in the world."
+    },
+    {
+      "icon": "fa fa-group",
+      "title": "API End-Points For Integration ",
+      "text": "These API can be consumed to integrate our entire database to your systems."
+    },
+    {
+      "icon": "fa fa-magic",
+      "title": "Loop Clearing API",
+      "text": "We provide loop clearing micro service that can be consumed irrespective of our system dependant data."
+    }
+  ]
+}
