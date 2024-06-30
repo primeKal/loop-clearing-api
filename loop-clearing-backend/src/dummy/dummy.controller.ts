@@ -1,34 +1,20 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { DummyService } from './dummy.service';
-import { CreateDummyDto } from './dto/create-dummy.dto';
-import { UpdateDummyDto } from './dto/update-dummy.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Dummy-Data')
 @Controller('dummy')
 export class DummyController {
   constructor(private readonly dummyService: DummyService) {}
 
-  @Post()
-  create(@Body() createDummyDto: CreateDummyDto) {
-    return this.dummyService.create(createDummyDto);
+  @Get('createUsers/:id')
+  createUsers(@Param('id') id: string) {
+    return this.dummyService.createUsers(+id);
   }
 
-  @Get()
-  findAll() {
-    return this.dummyService.findAll();
+  @Get('createTransactions/:id')
+  createTransactions(@Param('id') id: string) {
+    return this.dummyService.createTransactions(+id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dummyService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDummyDto: UpdateDummyDto) {
-    return this.dummyService.update(+id, updateDummyDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.dummyService.remove(+id);
-  }
 }

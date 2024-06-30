@@ -2,10 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ClearingService } from './clearing.service';
 import { CreateClearingDto } from './dto/create-clearing.dto';
 import { UpdateClearingDto } from './dto/update-clearing.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Clearing')
 @Controller('clearing')
 export class ClearingController {
-  constructor(private readonly clearingService: ClearingService) {}
+  constructor(private readonly clearingService: ClearingService) { }
 
   @Post()
   create(@Body() createClearingDto: CreateClearingDto) {

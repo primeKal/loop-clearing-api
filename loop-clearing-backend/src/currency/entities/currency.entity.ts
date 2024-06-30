@@ -1,7 +1,7 @@
 import { Lookup } from "src/generic/entity/lookup.entity";
 import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
 
-@Entity("transaction")
+@Entity("currency")
 export class Currency extends Lookup<Currency> {
     
 }
