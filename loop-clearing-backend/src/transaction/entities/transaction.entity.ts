@@ -17,6 +17,10 @@ export class Transaction extends BaseEntity<Transaction> {
     @Column({ default: true })
     normal_flow: boolean;
 
+    @Column({ default: false })
+    is_future: boolean;
+
+
     @ManyToOne(() => User, (user) => { user.transactions }, { eager: true })
     @JoinColumn({ name: 'user_id' })
     user: User
