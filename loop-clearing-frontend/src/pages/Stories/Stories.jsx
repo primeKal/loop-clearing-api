@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 function Stories() {
 
   const [data, setData] = React.useState([])
+
   const images = [
     "https://images.unsplash.com/photo-1525711857929-4272fb4a040f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&dl=hasan-almasi-OwqLxCvoVxI-unsplash.jpg",
     "https://downloadscdn6.freepik.com/273609/46/45878.jpg?filename=happy-surprised-attractive-afro-american-woman-raises-hands-reacts-awesome-unexpected-relevation.jpg&token=exp=1711787817~hmac=50ca7046dd9eaeab04d2921c874dad31",
@@ -30,16 +31,21 @@ function Stories() {
   const userData = useSelector(state => state.loggedInStatus.userData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
 
+  if (!userData) {
+    navigate('/')
+  }
   useEffect(() => { 
-    getStories()
+    console.log("user data", userData)
+    getStories(userData?.id)
   }, [])
+
   const getStories = async () => {
     try {
       setSearchTerm("")
-      const response = await fetch(baseUrl + 'Stories')
+      const response = await fetch(baseUrl + 'clearing/byUserId/'+userData.id)
       const data = await response.json()
       data.forEach(element => {
         element.img = Math.floor(Math.random() * images.length)
@@ -122,7 +128,7 @@ function Stories() {
              </div>
              </div>
               ))
-            : "loading"}
+            : <div><h1>Opps!</h1><p>can't find no clearing involving you</p><p>Click on Add new to start adding clearings</p></div>}
         </div>
       </div>
       {isModalOpen && (<AddStory isOpen={isModalOpen} closeModal={closeModal} getStories={getStories}></AddStory>)}

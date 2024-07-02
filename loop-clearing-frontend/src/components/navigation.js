@@ -71,11 +71,11 @@ export const Navigation = (props) => {
                 Transactions
               </Link>
             </li>
-            <li>
-              <Link to="/stories" className="page-scroll">
+            { isLoggedIn &&             <li>
+              <Link to="/clearings" className="page-scroll">
                 clearings
               </Link>
-            </li>
+            </li>}
             { !isLoggedIn &&             <li>
             <Link to="/login">Login</Link>
             </li>}

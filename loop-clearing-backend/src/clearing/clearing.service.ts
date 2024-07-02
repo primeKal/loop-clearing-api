@@ -14,9 +14,13 @@ export class ClearingService extends GenericService<Clearing> {
     repository: Repository<Clearing>,
   ) {
     super(repository);
+    this.repository = repository;
   }
 
-
+  async getClearingByUserId(userId: number): Promise<Clearing[]> {
+    const clearings = await this.repository.find({ where: { user_id: userId } });
+    return clearings;
+  }
   minimizeTransactions(transactions: Transaction[]): Transaction[] {
     // Step 1: Build the graph
     const graph = new Map<number, Map<number, number>>();

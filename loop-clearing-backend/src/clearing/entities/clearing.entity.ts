@@ -6,7 +6,7 @@ import { Entity, Column, ManyToOne, JoinColumn } from "typeorm";
 export class Clearing extends BaseEntity<Clearing> {
 
     @Column({ nullable: true })
-    user_id: string;
+    user_id: number;
 
 
     @Column()

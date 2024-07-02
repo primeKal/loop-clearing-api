@@ -18,6 +18,10 @@ export class ClearingController {
   findAll() {
     return this.clearingService.findAll();
   }
+  @Get('byUserId/:id')
+  findClearingByUserId(@Param('id') id: string) {
+    return this.clearingService.getClearingByUserId(+id);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
