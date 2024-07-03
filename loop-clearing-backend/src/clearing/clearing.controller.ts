@@ -22,6 +22,10 @@ export class ClearingController {
   findClearingByUserId(@Param('id') id: string) {
     return this.clearingService.getClearingByUserId(+id);
   }
+  @Post('Update/:id')
+  updateClearing(@Param('id') id: string) {
+    return this.clearingService.updateClearing(+id);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

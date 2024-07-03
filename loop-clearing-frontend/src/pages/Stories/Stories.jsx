@@ -1,14 +1,24 @@
-import React, { useState, useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { baseUrl } from '../../EndPoints';
-import AddStory from './AddStory';
-import { useNavigate } from 'react-router-dom'
-
-
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { baseUrl } from "../../EndPoints";
+import AddStory from "./AddStory";
+import { useNavigate } from "react-router-dom";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+} from "@material-ui/core";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import EditIcon from "@mui/icons-material/Edit";
+import UpdateIcon from "@mui/icons-material/Update";
 
 function Stories() {
-
-  const [data, setData] = React.useState([])
+  const [data, setData] = React.useState([]);
 
   const images = [
     "https://images.unsplash.com/photo-1525711857929-4272fb4a040f?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&dl=hasan-almasi-OwqLxCvoVxI-unsplash.jpg",
@@ -27,113 +37,176 @@ function Stories() {
     "img/testimonials/06.jpg",
   ];
 
-  const isLoggedIn = useSelector(state => state.loggedInStatus.isLoggedIn);
-  const userData = useSelector(state => state.loggedInStatus.userData);
+  const isLoggedIn = useSelector((state) => state.loggedInStatus.isLoggedIn);
+  const userData = useSelector((state) => state.loggedInStatus.userData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-
+  const [selectedClearingId, setSelectedClearingId] = useState("");
 
   if (!userData) {
-    navigate('/')
+    navigate("/");
   }
-  useEffect(() => { 
-    console.log("user data", userData)
-    getStories(userData?.id)
-  }, [])
+  useEffect(() => {
+    console.log("user data", userData);
+    getStories(userData?.id);
+  }, []);
 
   const getStories = async () => {
     try {
-      setSearchTerm("")
-      const response = await fetch(baseUrl + 'clearing/byUserId/'+userData.id)
-      const data = await response.json()
-      data.forEach(element => {
-        element.img = Math.floor(Math.random() * images.length)
-      });
-      console.log("my name", data)
-      setData(data)
+      setSearchTerm("");
+      const response = await fetch(
+        baseUrl + "clearing/byUserId/" + userData?.id
+      );
+      const data = await response.json();
+      console.log("my name", data);
+      setData(data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+  const handleEdit = (id) => {};
+  const handleUpdate = (row) => {
+    const userConfirmed = window.confirm(
+      `Intiate Clearing Algorithm for ${row.clearing_cycle} ?`
+    );
+
+    // Check if the user clicked 'OK'
+    if (userConfirmed) {
+      // User clicked 'OK', execute the method
+      userConfirmedAction(row.id);
+    } else {
+      // User clicked 'Cancel', do not execute the method
+      console.log("User cancelled the action.");
+    }
+  };
+  const handleStartClearing = (id) => {};
+
+  function userConfirmedAction(id) {
+    // This is the method to execute if the user confirms
+    console.log("User confirmed action. Method executed.");
+
+    fetch(baseUrl + `clearing/Update/${id}`, {
+      method: "POST",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        getStories();
+        closeModal();
+        return response.json();
+      })
+      .catch((error) => {
+        // handle error
+        console.error("There was an error!", error);
+      });
   }
-  function convertToDisplayableDate(isoDateString) {
-    const date = new Date(isoDateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-    });
-  }
- 
+
   return (
     <div id="testimonials">
       <div className="container">
         <div className="section-title text-center">
-          <h2>Take a look at the Stories left my our heroes</h2>
+          <h2>let The Games Begin</h2>
         </div>
         <div>
-        <div className="logged-in">
-          <input 
-                className="search-input" 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder='Search ...'
-                style={{
-                  borderRadius: '15px',
-                  border: '1px solid #ccc',
-                  padding: '10px',
-                  fontSize: '16px',
-                  width: '200px',
-                  outline: 'none',
-                  boxShadow: '0px 0px 5px 2px rgba(0,0,0,0.1)'
-                }}
-                ></input>
-          {
-            isLoggedIn && 
-            // <div className="logged-in">
-              <a
-                href="#services"
-                className="btn btn-custom btn-lg page-scroll"
-                onClick={() => setIsModalOpen(true)}
-              >
-                Add New
-              </a>
-            // </div>
-          }
+          <div>
+            <p>start by creating a clearing cycle</p>
+          </div>
+          <div className="logged-in">
+            <input
+              className="search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search ..."
+              style={{
+                borderRadius: "15px",
+                border: "1px solid #ccc",
+                padding: "10px",
+                fontSize: "16px",
+                width: "200px",
+                outline: "none",
+                boxShadow: "0px 0px 5px 2px rgba(0,0,0,0.1)",
+              }}
+            ></input>
+            {
+              isLoggedIn && (
+                // <div className="logged-in">
+                <a
+                  href="#services"
+                  className="btn btn-custom btn-lg page-scroll"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Add New
+                </a>
+              )
+              // </div>
+            }
+          </div>
         </div>
-        </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-                        mt-10 px-10 md:px-15 lg:px-32'>
-          {data.length > 0
-            ? data
-            .filter(d => d.name.toLowerCase().includes(searchTerm.toLowerCase()))
-              .map((item, index) => (
-                <div key={item.id} className='m-4 cursor-pointer' onClick={()=>navigate('blog-detail/'+item.id)} >
-                <img src={images[item.img]} className='w-full rounded-2xl
-                object-cover h-[200px]'/>
-                <h3 className='text-red-500 mt-3'>{item.tag}</h3>
-                <h3 className='font-bold mt-3'>{item.name}</h3>
-                <h3 className='line-clamp-3 text-gray-400 mt-3'>{item.description}</h3>
-                <div className='flex items-center mt-5'>
-                 <img src={headerImages[item.img]}
-                 className='w-[35px] rounded-full'/>
-                 <div className='ml-2'>
-                     <h3 className='font-bold text-[12px]'>{item.hero?.name?item?.hero?.name : "FFDB Bot"}</h3>
-                     <h3 className='text-gray-500 text-[10px]'>{convertToDisplayableDate(item.createdAt)}</h3>
-                 </div>
-             </div>
-             </div>
-              ))
-            : <div><h1>Opps!</h1><p>can't find no clearing involving you</p><p>Click on Add new to start adding clearings</p></div>}
+        <div>
+          {data.length > 0 ? (
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Cycle</TableCell>
+                    <TableCell>Number of Transactions</TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>Total Cleared Amount</TableCell>
+                    <TableCell>Remaining to Clear</TableCell>
+                    <TableCell>Clearing Steps</TableCell>
+                    <TableCell>
+                      Number of Future Clearing Transactions
+                    </TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{row.clearing_cycle}</TableCell>
+                      <TableCell>{row?.transactions?.length}</TableCell>
+                      <TableCell>{row.status}</TableCell>
+                      <TableCell>{row.total_cleared_amount}</TableCell>
+                      <TableCell>{row.remaining_amount}</TableCell>
+                      <TableCell>{row.clearingStems}</TableCell>
+                      <TableCell>
+                        {row.numberOfFutureClearingTransactions}
+                      </TableCell>
+                      <TableCell>
+                        {row.status == "Draft" && (
+                          <IconButton onClick={() => handleUpdate(row)}>
+                            <UpdateIcon />
+                          </IconButton>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <div>
+              <h1>Opps!</h1>
+              <p>can't find no clearing involving you</p>
+              <p>Click on Add new to start adding clearings</p>
+            </div>
+          )}
         </div>
       </div>
-      {isModalOpen && (<AddStory isOpen={isModalOpen} closeModal={closeModal} getStories={getStories}></AddStory>)}
+      {isModalOpen && (
+        <AddStory
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          getStories={getStories}
+        ></AddStory>
+      )}
     </div>
-  )
+  );
 }
 
-export default Stories
+export default Stories;

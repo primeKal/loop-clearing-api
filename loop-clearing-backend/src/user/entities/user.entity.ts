@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, One
 import * as bcrypt from 'bcrypt';
 import { Exclude } from "class-transformer";
 import { Transaction } from "src/transaction/entities/transaction.entity";
+import { Clearing } from "src/clearing/entities/clearing.entity";
 
 
 
@@ -45,6 +46,12 @@ export class User extends BaseEntity<User> {
         (transaction) => transaction.partner_id,
     )
     partners: Transaction[];
+
+    @OneToMany(
+        () => Clearing,
+        (clearing) => clearing.user_id,
+    )
+    clearings: Clearing[];
 
 
     // @OneToMany(

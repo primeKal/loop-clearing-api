@@ -14,8 +14,11 @@ import {
   Checkbox,
   ListItemText,
   MenuItem,
+  Box,
+  Chip
 } from "@material-ui/core";
 import { baseUrl } from "../../EndPoints";
+import { useDispatch, useSelector } from "react-redux";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -29,27 +32,27 @@ const MenuProps = {
 };
 
 function AddStory(props) {
+  const userData = useSelector((state) => state.loggedInStatus.userData);
   const [testimony, setStory] = useState({
-    clearing_cycle: 0,
+    clearing_cycle: `Clearing For ${new Date().toISOString().split("T")[0]}`,
     transactions: [],
+    user_id: userData?.id,
   });
-  const [selectedTransactions, setSelectedTransactions] = useState([]);
+  const [selectedTransactionData, setSelectedTransactionData] = useState([]);
 
-  const [transactionData, setTransaction] = React.useState([]);
+  const [transactionData, setTransactionData] = React.useState([]);
+
+  const [selectedRoleIds, setSelectedRoleIds] = useState([]);
 
   const getTransactions = async () => {
     fetch(`${baseUrl}transaction`)
       .then((response) => response.json())
-      .then((data) => setTransaction(setTransactionsWithName(data)));
+      .then((data) => setTransactionData(setTransactionsWithName(data)));
   };
   const setTransactionsWithName = (data) => {
-    data = data.forEach((element) => {
+    data.forEach((element) => {
       element.name =
-        element.user?.name +
-        "->" +
-        element.partner?.name +
-        "=" +
-        element.amount;
+        element.user?.name + "->" + element.partner?.name + "=" + element.value;
     });
     return data;
   };
@@ -65,6 +68,10 @@ function AddStory(props) {
   };
   const fontSize = 20;
 
+  const handleRoleChange = (event) => {
+    const { value } = event.target;
+    setSelectedRoleIds(value);
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -73,7 +80,10 @@ function AddStory(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...testimony, heroId: testimony.hero }),
+      body: JSON.stringify({
+        ...testimony,
+        transactions: selectedRoleIds,
+      }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -82,11 +92,6 @@ function AddStory(props) {
         props.getStories();
         props.closeModal();
         return response.json();
-      })
-      .then((data) => {
-        // handle successful response
-        console.log(data);
-        props.closeModal();
       })
       .catch((error) => {
         // handle error
@@ -97,43 +102,54 @@ function AddStory(props) {
   return (
     <Dialog open={props.isOpen} onClose={props.closeModal}>
       <DialogTitle>
-        <Typography variant="h4">Add a new Story</Typography>
+        <Typography variant="h4">Start A New Clearing Cycle</Typography>
       </DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <TextField
             name="name"
             label="Title"
+            defaultValue={`Clearing For ${new Date().toISOString().split("T")[0]}`}
             value={testimony.name}
             onChange={handleChange}
             variant="outlined"
+            disabled
             fullWidth
             inputProps={{ style: { fontSize: fontSize } }}
             InputLabelProps={{ style: { fontSize: fontSize } }}
             margin="normal"
           />
-          <FormControl sx={{ m: 1, width: 300 }}>
-            <InputLabel id="demo-multiple-checkbox-label">
-              Transactions
-            </InputLabel>
-            <Select
-              labelId="demo-multiple-checkbox-label"
-              id="demo-multiple-checkbox"
-              multiple
-              value={selectedTransactions}
-              onChange={handleChange}
-              input={<OutlinedInput label="Tag" />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
-            >
-              {transactionData.map((transaction) => (
-                <MenuItem key={transaction.id} value={transaction.name}>
-                  <Checkbox checked={selectedTransactions.indexOf(transaction.name) > -1} />
-                  <ListItemText primary={transaction.name} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {transactionData && (
+            <FormControl variant="outlined" fullWidth>
+              <InputLabel id="multi-select-label">
+                Select Transactions
+              </InputLabel>
+              <Select
+                multiple
+                value={selectedRoleIds}
+                onChange={handleRoleChange}
+                input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((roleId) => (
+                      <Chip
+                        key={roleId}
+                        label={transactionData?.find((e) => e.id === roleId).name}
+                      />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+              >
+                {transactionData.map((role) => (
+                  <MenuItem key={role.id} value={role.id}>
+                    <Checkbox checked={selectedRoleIds.includes(role.id)} />
+                    <ListItemText primary={role.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           <TextField
             name="description"
             label="Description"
