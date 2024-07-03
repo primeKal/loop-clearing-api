@@ -67,7 +67,7 @@ function AddHero(props) {
         <form onSubmit={handleSubmit}>
           <TextField name="name" label="Name" value={hero.name} onChange={handleChange} variant="outlined" fullWidth  inputProps={{ style: { fontSize: fontSize } }} InputLabelProps={{ style: { fontSize: fontSize } }} margin="normal"/>
           <TextField name="email" label="Email" value={hero.email} onChange={handleChange} variant="outlined" fullWidth inputProps={{ style: { fontSize: fontSize } }} InputLabelProps={{ style: { fontSize: fontSize } }} margin="normal" />
-          <TextField name="password" label="Password" value={hero.password} onChange={handleChange} variant="outlined" fullWidth inputProps={{ style: { fontSize: fontSize } }} InputLabelProps={{ style: { fontSize: fontSize } }} margin="normal"/>
+          <TextField name="password" label="Password" value={hero.password} onChange={handleChange} variant="outlined" type="password" fullWidth inputProps={{ style: { fontSize: fontSize } }} InputLabelProps={{ style: { fontSize: fontSize } }} margin="normal"/>
         </form>
       </DialogContent>
       <DialogActions>

@@ -16,6 +16,7 @@ import {
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import EditIcon from "@mui/icons-material/Edit";
 import UpdateIcon from "@mui/icons-material/Update";
+import TransactionsDialog from "./transactionDialogue";
 
 function Stories() {
   const [data, setData] = React.useState([]);
@@ -43,6 +44,10 @@ function Stories() {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
   const [selectedClearingId, setSelectedClearingId] = useState("");
+  const [selectedClearingCycle, setSelectedClearingCycle] = useState({});
+  const [transactions, setTransactions] = useState([]);
+
+  const [isConfirmationModal, setIsConfirmationModal] = useState(false);
 
   if (!userData) {
     navigate("/");
@@ -71,12 +76,13 @@ function Stories() {
   const handleEdit = (id) => {};
   const handleUpdate = (row) => {
     const userConfirmed = window.confirm(
-      `Intiate Clearing Algorithm for ${row.clearing_cycle} ?`
+      `Initiate Clearing Algorithm for ${row.clearing_cycle} ?`
     );
 
     // Check if the user clicked 'OK'
     if (userConfirmed) {
       // User clicked 'OK', execute the method
+      setSelectedClearingCycle(row);
       userConfirmedAction(row.id);
     } else {
       // User clicked 'Cancel', do not execute the method
@@ -92,13 +98,20 @@ function Stories() {
     fetch(baseUrl + `clearing/Update/${id}`, {
       method: "POST",
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         getStories();
         closeModal();
-        return response.json();
+        console.log("response", response);
+        const data = await response.json();
+        console.log("data", data);
+        setTransactions(data);
+        setTimeout(() => {
+          setIsConfirmationModal(true);
+        }, 2000);
+        return data;
       })
       .catch((error) => {
         // handle error
@@ -147,36 +160,56 @@ function Stories() {
             }
           </div>
         </div>
-        <div>
+        <div style={{ marginTop: "15px" }}>
           {data.length > 0 ? (
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
-                  <TableRow>
-                    <TableCell>Cycle</TableCell>
-                    <TableCell>Number of Transactions</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Total Cleared Amount</TableCell>
-                    <TableCell>Remaining to Clear</TableCell>
-                    <TableCell>Clearing Steps</TableCell>
-                    <TableCell>
-                      Number of Future Clearing Transactions
+                  <TableRow style={{ fontSize: "15px" }}>
+                    <TableCell style={{ fontSize: "15px" }}>Cycle</TableCell>
+                    <TableCell style={{ fontSize: "15px" }}>
+                      Number of Transactions
                     </TableCell>
+                    <TableCell style={{ fontSize: "15px" }}>Status</TableCell>
+                    <TableCell style={{ fontSize: "15px" }}>
+                      Total Cleared Amount
+                    </TableCell>
+                    <TableCell style={{ fontSize: "15px" }}>
+                      Remaining to Clear
+                    </TableCell>
+                    <TableCell style={{ fontSize: "15px" }}>
+                      Clearing Steps
+                    </TableCell>
+                    {/* <TableCell>
+                      Number of Future Clearing Transactions
+                    </TableCell> */}
                     <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {data.map((row, index) => (
                     <TableRow key={index}>
-                      <TableCell>{row.clearing_cycle}</TableCell>
-                      <TableCell>{row?.transactions?.length}</TableCell>
-                      <TableCell>{row.status}</TableCell>
-                      <TableCell>{row.total_cleared_amount}</TableCell>
-                      <TableCell>{row.remaining_amount}</TableCell>
-                      <TableCell>{row.clearingStems}</TableCell>
-                      <TableCell>
-                        {row.numberOfFutureClearingTransactions}
+                      <TableCell style={{ fontSize: "15px" }}>
+                        {row.clearing_cycle}
                       </TableCell>
+                      <TableCell style={{ fontSize: "15px" }}>
+                        {row?.transactions?.length}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "15px" }}>
+                        {row.status}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "15px" }}>
+                        {row.total_cleared_amount}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "15px" }}>
+                        {row.remaining_amount}
+                      </TableCell>
+                      <TableCell style={{ fontSize: "15px" }}>
+                        {row.clearingStems}
+                      </TableCell>
+                      {/* <TableCell>
+                        {row.numberOfFutureClearingTransactions}
+                      </TableCell> */}
                       <TableCell>
                         {row.status == "Draft" && (
                           <IconButton onClick={() => handleUpdate(row)}>
@@ -205,6 +238,12 @@ function Stories() {
           getStories={getStories}
         ></AddStory>
       )}
+      <TransactionsDialog
+        open={isConfirmationModal}
+        transactions={transactions}
+        len={selectedClearingCycle?.transactions?.length}
+        onClose={() => setIsConfirmationModal(false)}
+      />
     </div>
   );
 }

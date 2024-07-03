@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateClearingDto } from './dto/create-clearing.dto';
 import { UpdateClearingDto } from './dto/update-clearing.dto';
 import { Transaction } from 'src/transaction/entities/transaction.entity';
@@ -6,15 +6,21 @@ import { Clearing } from './entities/clearing.entity';
 import { GenericService } from 'src/generic/service/crud.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { TransactionService } from 'src/transaction/transaction.service';
+import { clear } from 'console';
 
 @Injectable()
 export class ClearingService extends GenericService<Clearing> {
+  private readonly transactionService: TransactionService;
   constructor(
     @InjectRepository(Clearing)
     repository: Repository<Clearing>,
+    @Inject(TransactionService)
+    transactionService: TransactionService
   ) {
     super(repository);
     this.repository = repository;
+    this.transactionService = transactionService;
   }
 
   async getClearingByUserId(userId: number): Promise<Clearing[]> {
@@ -22,10 +28,15 @@ export class ClearingService extends GenericService<Clearing> {
     return clearings;
   }
 
-  async updateClearing(clearing_id: number): Promise<Clearing> {
+  async updateClearing(clearing_id: number): Promise<Transaction[]> {
     const clearing = await this.repository.findOne({ where: { id: clearing_id } } as any);
     console.log("clearing", clearing);
-    return clearing;
+    const transactions = await this.transactionService.getTransactionsByIds(clearing.transactions as any[]);
+    const minimizedTransactions = this.minimizeTransactions(transactions);
+    console.log("minimizedTransactions", minimizedTransactions);
+    const savedTransactions = await this.transactionService.createMultipleTransactions(minimizedTransactions);
+    const newTransactions = await this.transactionService.getTransactionsByIds(savedTransactions.map( el => el.id) as any[]);
+    return newTransactions;
   }
   minimizeTransactions(transactions: Transaction[]): Transaction[] {
     // Step 1: Build the graph
